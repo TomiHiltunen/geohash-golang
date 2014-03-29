@@ -114,7 +114,7 @@ func (ll *LatLng) Lng() float64 {
 }
 
 func refineInterval(interval []float64, cd, mask int) []float64 {
-	if cd > 0 && mask > 0 {
+	if cd&mask > 0 {
 		interval[0] = (interval[0] + interval[1]) / 2
 	} else {
 		interval[1] = (interval[0] + interval[1]) / 2
@@ -123,7 +123,7 @@ func refineInterval(interval []float64, cd, mask int) []float64 {
 }
 
 // Get LatLng coordinates from a geohash
-func Decode(geohash string) (*BoundingBox, error) {
+func Decode(geohash string) *BoundingBox {
 	isEven := true
 	lat := []float64{-90, 90}
 	lng := []float64{-180, 180}
@@ -132,7 +132,7 @@ func Decode(geohash string) (*BoundingBox, error) {
 	var c string
 	var cd int
 	for i := 0; i < len(geohash); i++ {
-		c = geohash[i:1]
+		c = geohash[i : i+1]
 		cd = bytes.Index(base32, []byte(c))
 		for j := 0; j < 5; j++ {
 			if isEven {
@@ -158,7 +158,7 @@ func Decode(geohash string) (*BoundingBox, error) {
 			lat: (lat[0] + lat[1]) / 2,
 			lng: (lng[0] + lng[1]) / 2,
 		},
-	}, nil
+	}
 }
 
 // Create a geohash based on LatLng coordinates
