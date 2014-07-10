@@ -68,7 +68,8 @@ func CalculateAdjacent(s, dir string) string {
 	case "left":
 		dirInt = 3
 	}
-	base := s[0:]
+	// base := s[0:]
+	base := s[:(len(s) - 1)]
 	if strings.Index(borders[dirInt][oddEven], lastChr) != -1 {
 		base = CalculateAdjacent(base, dir)
 	}
