@@ -76,6 +76,21 @@ func CalculateAdjacent(s, dir string) string {
 	return base + string(base32[strings.Index(neighbors[dirInt][oddEven], lastChr)])
 }
 
+// Shortcut to calculate all adjacent geohashes.
+func CalculateAllAdjacent(s string) []string {
+	values := []string{}
+	directions := []string{"top", "right", "bottom", "left"}
+	for _, direction := range directions {
+		neighbour := CalculateAdjacent(s, direction)
+		values = append(values, neighbour)
+		if direction == "top" || direction == "bottom" {
+			values = append(values, CalculateAdjacent(neighbour, "right"))
+			values = append(values, CalculateAdjacent(neighbour, "left"))
+		}
+	}
+	return values
+}
+
 // Struct for passing Box.
 type BoundingBox struct {
 	sw     LatLng
