@@ -89,4 +89,15 @@ func TestEncode(t *testing.T) {
 		}
 	}
 
+	for prec := range []int{3, 4, 5, 6, 7, 8} {
+		for _, test := range tests {
+			geohash := EncodeWithPrecision(test.latlng.lat, test.latlng.lng, prec)
+			if len(geohash) != prec {
+				t.Errorf("expected len %d, got %d", prec, len(geohash))
+			}
+			if test.geohash[0:prec] != geohash {
+				t.Errorf("expectd %s, got %s", test.geohash, geohash)
+			}
+		}
+	}
 }
