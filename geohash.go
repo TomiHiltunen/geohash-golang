@@ -177,14 +177,19 @@ func Decode(geohash string) *BoundingBox {
 	}
 }
 
-// Create a geohash based on LatLng coordinates
+// Create a geohash with 12 positions based on LatLng coordinates
 func Encode(latitude, longitude float64) string {
+	return EncodeWithPrecision(latitude, longitude, 12)
+}
+
+// Create a geohash with given precision (number of characters of the resulting
+// hash) based on LatLng coordinates
+func EncodeWithPrecision(latitude, longitude float64, precision int) string {
 	isEven := true
 	lat := []float64{-90, 90}
 	lng := []float64{-180, 180}
 	bit := 0
 	ch := 0
-	precision := 12
 	var geohash bytes.Buffer
 	var mid float64
 	for geohash.Len() < precision {
